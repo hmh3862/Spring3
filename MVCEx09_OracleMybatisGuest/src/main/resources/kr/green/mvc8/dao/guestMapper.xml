@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.mvc8.dao.GuestDAO">
+	<!-- 모두 얻기 -->
+	<select id="selectList" resultType="GuestVO">
+		SELECT * FROM guest ORDER BY REF DESC, seq	
+	</select>
+	
+	<!-- 원본글 저장 -->
+	<insert id="insert" parameterType="GuestVO">
+		INSERT INTO 
+			guest 
+		VALUES 
+			(guest_idx_seq.nextval,guest_idx_seq.currval,0,0,#{name},#{password},#{content},sysdate,#{ip},'N')
+	</insert>
+	
+	<!-- 답변저장 -->
+	<insert id="reply" parameterType="GuestVO">
+		INSERT INTO 
+			guest 
+		VALUES 
+			(guest_idx_seq.nextval,#{ref},#{seq},#{lev},#{name},#{password},#{content},sysdate,#{ip},'N')
+	</insert>
+	
+	<!-- 나보다 seq가 큰 값을 모두 1 증가 시켜주는 쿼리 -->
+	<update id="updateSeq" parameterType="hashmap" >
+		<![CDATA[
+		update guest set seq=seq+1 where ref=#{ref} and seq>#{seq}
+		]]>
+	</update>
+	
+	<!-- 수정 -->
+	<update id="update" parameterType="GuestVO">
+		update 
+			guest
+		set
+			content = #{content},
+			regdate = sysdate,
+			ip = #{ip}
+		where
+			idx=#{idx}
+	</update>
+	<!-- 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="GuestVO">
+		select * from guest where idx=#{idx}
+	</select>
+	
+	<!-- 삭제를 위한 명령어들 -->
+	<!-- 1. 항목 삭제 -->
+	<delete id="delete1" parameterType="int">
+		delete from guest where idx=#{idx} and del='Y'
+	</delete>
+	
+	<delete id="delete2" parameterType="int">
+		delete from guest where idx=#{idx}
+	</delete>
+	
+	<!-- 2. 나와 ref가 같으면서 seq가 크거나 같은것 뽑기  -->
+	<select id="selectSeqList" parameterType="hashmap" resultType="GuestVO">
+		select
+			*
+		from
+			guest
+		where
+			<![CDATA[
+			ref=#{ref} and seq >= #{seq} 
+			]]>
+		order by 
+			seq
+	</select>
+	<!-- 3. 삭제표시를 변경하는 쿼리 -->
+	<update id="updateDel" parameterType="int">
+		update guest set del='Y' where idx=#{idx}
+	</update>
+	<!-- 4. 삭제표시값이 'Y'인 모든 데이터 가져오기 -->
+	<select id="selectDelList" resultType="GuestVO">
+		select * from guest where del='Y' order by idx desc
+	</select>
+</mapper>
