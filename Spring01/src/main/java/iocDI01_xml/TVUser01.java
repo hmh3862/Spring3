@@ -21,6 +21,7 @@ interface TV {
 	void  volumeUp();
 	void  volumeDown();
 }
+
 class SsTVi implements TV {
 	public SsTVi() { System.out.println("~~ SsTVi 생성자 ~~"); } 
 	public void  powerOn() { System.out.println("~~ SsTVi powerOn ~~"); }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 직접 생성 -->
+	<bean class="iocDI01_xml.SsTVsi" id="tvs" lazy-init="true" />
+	
+	<!-- 생성자 주입 
+		=> SpeakerA, B 교체시에도 소스를 수정할 필요없음 -->
+	<bean class="iocDI01_xml.LgTVsi" id="tvl" lazy-init="true">
+		<constructor-arg name="sp" ref="spa" />
+		<constructor-arg name="color" value="Blue" />
+		<constructor-arg name="price" value="123456" />
+	</bean>
+	
+	<bean class="iocDI01_xml.SpeakerA" id="spa" lazy-init="true" />
+	<bean class="iocDI01_xml.SpeakerB" id="spb" lazy-init="true" />
+	
+	<!-- Setter 주입 
+		=> SpeakerA, B 교체시에도 소스를 수정할 필요없음 -->
+	<bean class="iocDI01_xml.AiTVsi" id="tva" lazy-init="true">
+		<property name="sp" ref="spb" />
+		<property name="color" value="Yellow" />
+		<property name="price" value="7788000" />
+	</bean>
+
+</beans>
