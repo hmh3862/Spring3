@@ -10,7 +10,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 //-> GenericApplicationContext (C) -> GenericXmlApplicationContext (C) 
 
 //public abstract class AbstractApplicationContext extends DefaultResourceLoader
-//    implements ConfigurableApplicationContext, DisposableBean {....
+//		implements ConfigurableApplicationContext, DisposableBean {....
 
 //public class GenericXmlApplicationContext extends GenericApplicationContext {...
 
@@ -24,9 +24,10 @@ public class TVUser02 {
 
 	public static void main(String[] args) {
 		// 1. 콩공장(BeanFactory) 생성
-	    // => 스프링 컨테이너 구동(생성)
+		// => 스프링 컨테이너 구동(생성)
 		AbstractApplicationContext sc = new 
 				GenericXmlApplicationContext("iocDI01_xml/app02.xml");
+		
 		// 2. 객체를 전달받고 실행
 		TV tv = (TV)sc.getBean("tv");
 		if ( tv!=null ) {
@@ -37,8 +38,8 @@ public class TVUser02 {
 		}else System.out.println("** TV 선택 오류 **");
 		
 		// 3. SingleTon Test
-	    // => 스프링 프레임 웤의 모든 작업은 싱글톤을 기본으로함.
-	    // => 싱글톤 (한개의 인스턴스만 허용 하는것) 적용 Test
+		// => 스프링 프레임웤의 모든 작업은 싱글톤을 기본으로함.
+		// => 싱글톤 (한개의 인스턴스만 허용 하는것) 적용 Test
 		TV tvl = (TV)sc.getBean("tv");
 		TV tvs1 = (TV)sc.getBean("tvs");
 		TV tvs2 = (TV)sc.getBean("tvs");
